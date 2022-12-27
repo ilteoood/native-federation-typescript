@@ -34,16 +34,24 @@ export const resolveExposes = (userOptions: UserOptions) => {
         .map(exposedPath => resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath)
 }
 
+const adaptedTsConfig = (componentsToExpose: string[], userOptions: Required<UserOptions>) => {
+    return componentsToExpose.length === 1 ? {
+        ...userOptions,
+        typesFolder: path.join(userOptions.typesFolder, path.basename(path.dirname(componentsToExpose[0])))
+    } : userOptions
+}
+
 export const retrieveConfig = (options: UserOptions) => {
     if (!options.moduleFederationConfig) {
         throw new Error('moduleFederationConfig is required')
     }
 
     const userOptions: Required<UserOptions> = { ...defaultOptions, ...options }
-    const tsConfig = readTsConfig(userOptions)
+    const componentsToExpose = resolveExposes(userOptions)
+    const tsConfig = readTsConfig(adaptedTsConfig(componentsToExpose, userOptions))
 
     return {
-        userOptions,
-        tsConfig
+        tsConfig,
+        componentsToExpose
     }
 }

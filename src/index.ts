@@ -11,11 +11,10 @@ const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
 }
 
 const unplugin = createUnplugin((options: UserOptions) => {
-  const { userOptions, tsConfig } = retrieveConfig(options)
+  const { tsConfig, componentsToExpose } = retrieveConfig(options)
   return {
     name: 'native-federation-typescript',
     buildStart() {
-      const componentsToExpose = resolveExposes(userOptions)
       const tsProgram = typescript.createProgram(componentsToExpose, tsConfig)
       const { diagnostics = [] } = tsProgram.emit()
       diagnostics.forEach(reportCompileDiagnostic)
