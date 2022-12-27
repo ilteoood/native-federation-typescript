@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import typescript from "typescript";
-import { UserOptions } from "../interfaces/UserOptions";
+import { RemoteOptions } from "../interfaces/RemoteOptions";
 
 const defaultOptions = {
     tsConfigPath: './tsconfig.json',
     typesFolder: '@mf-types'
 }
 
-const readTsConfig = ({ tsConfigPath, typesFolder }: Required<UserOptions>): typescript.CompilerOptions => {
+const readTsConfig = ({ tsConfigPath, typesFolder }: Required<RemoteOptions>): typescript.CompilerOptions => {
     const resolvedTsConfigPath = path.resolve(tsConfigPath)
 
     const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile);
@@ -29,7 +29,7 @@ const resolveWithExtension = (exposedPath: string) => {
     return undefined
 }
 
-export const resolveExposes = (userOptions: UserOptions) => {
+export const resolveExposes = (userOptions: RemoteOptions) => {
     return Object.entries(userOptions.moduleFederationConfig.exposes as Record<string, string>)
         .reduce((accumulator, [exposedEntry, exposedPath]) => {
             accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
@@ -37,12 +37,12 @@ export const resolveExposes = (userOptions: UserOptions) => {
         }, {} as Record<string, string>);
 }
 
-export const retrieveConfig = (options: UserOptions) => {
+export const retrieveConfig = (options: RemoteOptions) => {
     if (!options.moduleFederationConfig) {
         throw new Error('moduleFederationConfig is required')
     }
 
-    const userOptions: Required<UserOptions> = { ...defaultOptions, ...options }
+    const userOptions: Required<RemoteOptions> = { ...defaultOptions, ...options }
     const mapComponentsToExpose = resolveExposes(userOptions)
     const tsConfig = readTsConfig(userOptions)
 

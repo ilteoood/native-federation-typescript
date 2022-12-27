@@ -1,4 +1,4 @@
-export interface UserOptions {
+export interface RemoteOptions {
     moduleFederationConfig: any;
     tsConfigPath?: string;
     typesFolder?: string;

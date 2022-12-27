@@ -16,9 +16,9 @@ const getPathToAppend = (componentsToExpose: string[]) => componentsToExpose.len
 
 const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions) => {
     const pathToAppend = getPathToAppend(Object.values(mapComponentsToExpose))
-    tsConfig.outDir = path.join(tsConfig.outDir!, pathToAppend)
+    const outDir = path.join(tsConfig.outDir!, pathToAppend)
 
-    const host = typescript.createCompilerHost(tsConfig);
+    const host = typescript.createCompilerHost({...tsConfig, outDir});
     const originalWriteFile = host.writeFile
     const mapExposeToEntry = Object.fromEntries(Object.entries(mapComponentsToExpose).map(entry => entry.reverse()))
 
@@ -28,8 +28,8 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
         for (const sourceFile of sourceFiles || []) {
             const sourceEntry = mapExposeToEntry[sourceFile.fileName]
             if (sourceEntry) {
-                const mfeTypeEntry = path.join(tsConfig.outDir!.replace(pathToAppend, ''), `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
-                const relativePathToOutput = path.join(pathToAppend, filepath.replace(tsConfig.outDir!, '').replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, ''))
+                const mfeTypeEntry = path.join(outDir.replace(pathToAppend, ''), `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
+                const relativePathToOutput = path.join(pathToAppend, filepath.replace(outDir, '').replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, ''))
                 originalWriteFile(mfeTypeEntry, `export * from './${relativePathToOutput}';\nexport { default } from './${relativePathToOutput}';`, writeOrderByteMark)
             }
         }

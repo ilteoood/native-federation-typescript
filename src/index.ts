@@ -1,9 +1,9 @@
 import { createUnplugin } from "unplugin";
 import { retrieveConfig } from "./configutations/plugin";
-import { UserOptions } from "./interfaces/UserOptions";
+import { RemoteOptions } from "./interfaces/RemoteOptions";
 import { compileTs } from "./lib/TypeScriptCompiler";
 
-export const NativeFederationTypeScriptRemote = createUnplugin((options: UserOptions) => {
+export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
   const { tsConfig, mapComponentsToExpose } = retrieveConfig(options)
   return {
     name: 'native-federation-typescript/remote',
