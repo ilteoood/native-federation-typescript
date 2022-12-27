@@ -4,11 +4,11 @@ import { UserOptions } from "./interfaces/UserOptions";
 import { compileTs } from "./lib/TypeScriptCompiler";
 
 const unplugin = createUnplugin((options: UserOptions) => {
-  const { tsConfig, componentsToExpose } = retrieveConfig(options)
+  const { tsConfig, mapComponentsToExpose } = retrieveConfig(options)
   return {
     name: 'native-federation-typescript',
     writeBundle() {
-      compileTs(componentsToExpose, tsConfig)
+      compileTs(mapComponentsToExpose, tsConfig)
     }
   }
 })

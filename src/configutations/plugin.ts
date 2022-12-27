@@ -30,15 +30,11 @@ const resolveWithExtension = (exposedPath: string) => {
 }
 
 export const resolveExposes = (userOptions: UserOptions) => {
-    return Object.values(userOptions.moduleFederationConfig.exposes as Record<string, string>)
-        .map(exposedPath => resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath)
-}
-
-const adaptedTsConfig = (componentsToExpose: string[], userOptions: Required<UserOptions>) => {
-    return componentsToExpose.length === 1 ? {
-        ...userOptions,
-        typesFolder: path.join(userOptions.typesFolder, path.basename(path.dirname(componentsToExpose[0])))
-    } : userOptions
+    return Object.entries(userOptions.moduleFederationConfig.exposes as Record<string, string>)
+        .reduce((accumulator, [exposedEntry, exposedPath]) => {
+            accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
+            return accumulator
+        }, {} as Record<string, string>);
 }
 
 export const retrieveConfig = (options: UserOptions) => {
@@ -47,11 +43,11 @@ export const retrieveConfig = (options: UserOptions) => {
     }
 
     const userOptions: Required<UserOptions> = { ...defaultOptions, ...options }
-    const componentsToExpose = resolveExposes(userOptions)
-    const tsConfig = readTsConfig(adaptedTsConfig(componentsToExpose, userOptions))
+    const mapComponentsToExpose = resolveExposes(userOptions)
+    const tsConfig = readTsConfig(userOptions)
 
     return {
         tsConfig,
-        componentsToExpose
+        mapComponentsToExpose
     }
 }
