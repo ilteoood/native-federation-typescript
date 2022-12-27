@@ -48,6 +48,7 @@ export const retrieveConfig = (options: RemoteOptions) => {
 
     return {
         tsConfig,
-        mapComponentsToExpose
+        mapComponentsToExpose,
+        userOptions
     }
 }
