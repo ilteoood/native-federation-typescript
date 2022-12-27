@@ -1,0 +1,15 @@
+{
+  "name": "native-federation-typescript",
+  "version": "1.0.0",
+  "description": "Bundler agnostic plugin to share federated types",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Matteo Pietro Dazzi",
+  "license": "MIT",
+  "dependencies": {
+    "unplugin": "^1.0.1"
+  }
+}
