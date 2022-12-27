@@ -1,6 +1,6 @@
 import typescript from "typescript";
 import { createUnplugin } from "unplugin";
-import { retrieveConfig } from "./configutations/plugin";
+import { resolveExposes, retrieveConfig } from "./configutations/plugin";
 import { UserOptions } from "./interfaces/UserOptions";
 
 const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
@@ -15,7 +15,7 @@ const unplugin = createUnplugin((options: UserOptions) => {
   return {
     name: 'native-federation-typescript',
     buildStart() {
-      const componentsToExpose = Object.values(userOptions.moduleFederationConfig.exposes as Record<string, string>)
+      const componentsToExpose = resolveExposes(userOptions)
       const tsProgram = typescript.createProgram(componentsToExpose, tsConfig)
       const { diagnostics = [] } = tsProgram.emit()
       diagnostics.forEach(reportCompileDiagnostic)
