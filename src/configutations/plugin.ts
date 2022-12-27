@@ -12,7 +12,7 @@ const readTsConfig = ({tsConfigPath, typesFolder}: Required<UserOptions>): types
 
     const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile);
     const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath));
-    const outDir = path.join(configContent.options.outDir!, typesFolder);
+    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder);
 
     return {...configContent.options, emitDeclarationOnly: true, outDir};
 }
