@@ -2,9 +2,20 @@
   "name": "native-federation-typescript",
   "version": "1.0.0",
   "description": "Bundler agnostic unplugin to share federated types",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "unbuild"
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
@@ -13,9 +24,8 @@
     "unplugin": "^1.0.1"
   },
   "devDependencies": {
-    "@module-federation/utilities": "^1.0.1",
     "@types/node": "^18.11.18",
     "typescript": "^4.9.4",
-    "webpack": "^5.75.0"
+    "unbuild": "^1.0.2"
   }
 }
