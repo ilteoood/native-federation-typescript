@@ -14,7 +14,7 @@ const defaultOptions = {
 const readTsConfig = ({tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {
     const resolvedTsConfigPath = path.resolve(tsConfigPath)
 
-    const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile)
+    const readResult = typescript.readConfigFile(resolvedTsConfigPath, typescript.sys.readFile)
     const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath))
     const outDir = path.join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder)
 
