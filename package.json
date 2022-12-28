@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.5.10",
+    "axios": "^1.2.1",
     "unplugin": "^1.0.1"
   },
   "devDependencies": {

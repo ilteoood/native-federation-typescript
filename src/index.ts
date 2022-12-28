@@ -1,4 +1,5 @@
 import AdmZip from "adm-zip";
+import axios from "axios";
 import { rm } from "fs/promises";
 import path from "path";
 import typescript from "typescript";
@@ -28,6 +29,28 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
       if(remoteOptions.deleteTypesFolder) {
         await rm(tsConfig.outDir!, {recursive: true})
       }
+    }
+  }
+})
+
+export const NativeFederationTypeScriptHost = createUnplugin((options: RemoteOptions) => {
+  const { hostOptions, mapRemotesToDownload } = retrieveHostConfig(options)
+  return {
+    name: 'native-federation-typescript/remote',
+    async writeBundle() {
+      if(hostOptions.deleteTypesFolders) {
+        await rm(hostOptions.typesFolder, {recursive: true})
+      }
+
+      const downloadPromises = Object.entries(mapRemotesToDownload).map(async ([destinationFolder, fileToDownload]) => {
+        const response = await axios.get(fileToDownload, {responseType: 'arraybuffer'})
+        const destinationPath = path.join(hostOptions.typesFolder, destinationFolder)
+
+        const zip = new AdmZip(Buffer.from(response.data))
+        zip.extractAllTo(destinationPath, true)
+      })
+
+      await Promise.allSettled(downloadPromises)
     }
   }
 })
