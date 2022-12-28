@@ -1,5 +1,6 @@
 import path from 'path'
 import typescript from 'typescript'
+
 import {RemoteOptions} from '../interfaces/RemoteOptions'
 
 const STARTS_WITH_SLASH = /^\//

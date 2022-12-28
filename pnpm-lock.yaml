@@ -10,6 +10,7 @@ specifiers:
   eslint: ^8.30.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.2.1
+  eslint-plugin-simple-import-sort: ^8.0.0
   prettier: ^2.8.1
   tsup: ^6.5.0
   typescript: ^4.9.4
@@ -29,6 +30,7 @@ devDependencies:
   eslint: 8.30.0
   eslint-config-prettier: 8.5.0_eslint@8.30.0
   eslint-plugin-prettier: 4.2.1_kl4pe43v5b43npmso5hoplpbyi
+  eslint-plugin-simple-import-sort: 8.0.0_eslint@8.30.0
   prettier: 2.8.1
   typescript: 4.9.4
 
@@ -696,6 +698,14 @@ packages:
       eslint-config-prettier: 8.5.0_eslint@8.30.0
       prettier: 2.8.1
       prettier-linter-helpers: 1.0.0
+    dev: true
+
+  /eslint-plugin-simple-import-sort/8.0.0_eslint@8.30.0:
+    resolution: {integrity: sha512-bXgJQ+lqhtQBCuWY/FUWdB27j4+lqcvXv5rUARkzbeWLwea+S5eBZEQrhnO+WgX3ZoJHVj0cn943iyXwByHHQw==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: 8.30.0
     dev: true
 
   /eslint-scope/5.1.1:
