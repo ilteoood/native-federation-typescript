@@ -21,6 +21,7 @@ dependencies:
   adm-zip: 0.5.10
   axios: 1.2.1
   tsup: 6.5.0_typescript@4.9.4
+  typescript: 4.9.4
   unplugin: 1.0.1
 
 devDependencies:
@@ -33,7 +34,6 @@ devDependencies:
   eslint-plugin-prettier: 4.2.1_kl4pe43v5b43npmso5hoplpbyi
   eslint-plugin-simple-import-sort: 8.0.0_eslint@8.30.0
   prettier: 2.8.1
-  typescript: 4.9.4
   vitest: 0.26.2
 
 packages:
