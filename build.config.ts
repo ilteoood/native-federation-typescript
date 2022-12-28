@@ -1,5 +1,6 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  failOnWarn: false
+  failOnWarn: false,
+  clean: true
 })

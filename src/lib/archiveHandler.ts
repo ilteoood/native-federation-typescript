@@ -21,7 +21,7 @@ const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) 
     throw reason
 }
 
-export const downloadTypesArchive = (hostOptions: Required<HostOptions>) => async (destinationFolder: string, fileToDownload: string) => {
+export const downloadTypesArchive = (hostOptions: Required<HostOptions>) => async ([destinationFolder, fileToDownload]: string[]) => {
     const response = await axios.get(fileToDownload, { responseType: 'arraybuffer' }).catch(downloadErrorLogger(destinationFolder, fileToDownload))
 
     const destinationPath = path.join(hostOptions.typesFolder, destinationFolder)

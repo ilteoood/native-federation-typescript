@@ -34,8 +34,7 @@ export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptio
       }
 
       const typesDownloader = downloadTypesArchive(hostOptions)
-      const downloadPromises = Object.entries(mapRemotesToDownload)
-        .map(async ([destinationFolder, fileToDownload]) => typesDownloader(destinationFolder, fileToDownload))
+      const downloadPromises = Object.entries(mapRemotesToDownload).map(typesDownloader)
 
       await Promise.allSettled(downloadPromises)
     }
