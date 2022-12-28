@@ -32,7 +32,7 @@ const resolveWithExtension = (exposedPath: string) => {
     return undefined
 }
 
-export const resolveExposes = (remoteOptions: RemoteOptions) => {
+const resolveExposes = (remoteOptions: RemoteOptions) => {
     return Object.entries(remoteOptions.moduleFederationConfig.exposes as Record<string, string>)
         .reduce((accumulator, [exposedEntry, exposedPath]) => {
             accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
