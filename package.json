@@ -37,7 +37,8 @@
   ],
   "scripts": {
     "build": "tsup src/*.ts --format cjs,esm --dts --splitting --clean --minify",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
@@ -58,6 +59,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "prettier": "^2.8.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vitest": "^0.26.2"
   }
 }
