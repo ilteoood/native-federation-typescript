@@ -10,12 +10,12 @@ const defaultOptions = {
     deleteTypesFolder: true,
 }
 
-const readTsConfig = ({ tsConfigPath, typesFolder }: Required<RemoteOptions>): typescript.CompilerOptions => {
+const readTsConfig = ({ tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {
     const resolvedTsConfigPath = path.resolve(tsConfigPath)
 
     const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile);
     const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath));
-    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder);
+    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder);
 
     return { ...configContent.options, emitDeclarationOnly: true, noEmit: false, declaration: true, outDir };
 }

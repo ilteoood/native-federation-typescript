@@ -6,14 +6,15 @@ import { createUnplugin } from "unplugin";
 
 import { retrieveConfig } from "./configutations/plugin";
 import { RemoteOptions } from "./interfaces/RemoteOptions";
-import { compileTs } from "./lib/TypeScriptCompiler";
+import { compileTs, retrieveMfTypesPath } from "./lib/TypeScriptCompiler";
 
-const retrieveTypesZipPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => path.join(tsConfig.outDir!.replace(remoteOptions.typesFolder, ''), `${remoteOptions.typesFolder}.zip`)
+const retrieveTypesZipPath = (mfTypesPath: string, remoteOptions: Required<RemoteOptions>) => path.join(mfTypesPath.replace(remoteOptions.typesFolder, ''), `${remoteOptions.typesFolder}.zip`)
 
 const createTypesArchive = async (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
+  const mfTypesPath = retrieveMfTypesPath(tsConfig, remoteOptions)
   const zip = new AdmZip()
-  zip.addLocalFolder(tsConfig.outDir!)
-  await zip.writeZipPromise(retrieveTypesZipPath(tsConfig, remoteOptions))
+  zip.addLocalFolder(mfTypesPath)
+  await zip.writeZipPromise(retrieveTypesZipPath(mfTypesPath, remoteOptions))
 }
 
 export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
@@ -21,7 +22,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
   return {
     name: 'native-federation-typescript/remote',
     async writeBundle() {
-      compileTs(mapComponentsToExpose, tsConfig)
+      compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
       await createTypesArchive(tsConfig, remoteOptions)
       if(remoteOptions.deleteTypesFolder) {
         await rm(tsConfig.outDir!, {recursive: true})

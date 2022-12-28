@@ -1,5 +1,6 @@
 import path from "path";
 import typescript from "typescript";
+import { RemoteOptions } from "../interfaces/RemoteOptions";
 
 const STARTS_WITH_SLASH = /^\//
 
@@ -12,15 +13,13 @@ const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
     console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`);
 }
 
-const getPathToAppend = (componentsToExpose: string[]) => componentsToExpose.length === 1 ? path.basename(path.dirname(componentsToExpose[0])) : ''
+export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '')
 
-const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions) => {
-    const pathToAppend = getPathToAppend(Object.values(mapComponentsToExpose))
-    const outDir = path.join(tsConfig.outDir!, pathToAppend)
-
-    const host = typescript.createCompilerHost({...tsConfig, outDir});
+const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
+    const host = typescript.createCompilerHost(tsConfig);
     const originalWriteFile = host.writeFile
     const mapExposeToEntry = Object.fromEntries(Object.entries(mapComponentsToExpose).map(entry => entry.reverse()))
+    const mfTypePath = retrieveMfTypesPath(tsConfig, remoteOptions)
 
     host.writeFile = (filepath, text, writeOrderByteMark, onError, sourceFiles, data) => {
         originalWriteFile(filepath, text, writeOrderByteMark, onError, sourceFiles, data)
@@ -28,8 +27,8 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
         for (const sourceFile of sourceFiles || []) {
             const sourceEntry = mapExposeToEntry[sourceFile.fileName]
             if (sourceEntry) {
-                const mfeTypeEntry = path.join(outDir.replace(pathToAppend, ''), `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
-                const relativePathToOutput = path.join(pathToAppend, filepath.replace(outDir, '').replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, ''))
+                const mfeTypeEntry = path.join(mfTypePath, `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
+                const relativePathToOutput = path.relative(mfTypePath, filepath).replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, '')
                 originalWriteFile(mfeTypeEntry, `export * from './${relativePathToOutput}';\nexport { default } from './${relativePathToOutput}';`, writeOrderByteMark)
             }
         }
@@ -38,8 +37,8 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
     return host
 }
 
-export const compileTs = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions) => {
-    const tsHost = createHost(mapComponentsToExpose, tsConfig)
+export const compileTs = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
+    const tsHost = createHost(mapComponentsToExpose, tsConfig, remoteOptions)
     const tsProgram = typescript.createProgram(Object.values(mapComponentsToExpose), tsConfig, tsHost)
 
     const { diagnostics = [] } = tsProgram.emit()
