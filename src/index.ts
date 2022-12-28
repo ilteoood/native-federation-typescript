@@ -18,7 +18,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
       await createTypesArchive(tsConfig, remoteOptions)
 
       if (remoteOptions.deleteTypesFolder) {
-        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true})
+        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
       }
     }
   }
@@ -30,7 +30,7 @@ export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptio
     name: 'native-federation-typescript/host',
     async writeBundle() {
       if (hostOptions.deleteTypesFolder) {
-        await rm(hostOptions.typesFolder, {recursive: true})
+        await rm(hostOptions.typesFolder, {recursive: true, force: true})
       }
 
       const typesDownloader = downloadTypesArchive(hostOptions)
