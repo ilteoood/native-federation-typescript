@@ -4,7 +4,8 @@ import path from "path";
 import typescript from "typescript";
 import { createUnplugin } from "unplugin";
 
-import { retrieveConfig } from "./configutations/plugin";
+import { retrieveHostConfig } from "./configutations/hostPlugin";
+import { retrieveRemoteConfig } from "./configutations/remotePlugin";
 import { RemoteOptions } from "./interfaces/RemoteOptions";
 import { compileTs, retrieveMfTypesPath } from "./lib/TypeScriptCompiler";
 
@@ -18,7 +19,7 @@ const createTypesArchive = async (tsConfig: typescript.CompilerOptions, remoteOp
 }
 
 export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
-  const { remoteOptions, tsConfig, mapComponentsToExpose } = retrieveConfig(options)
+  const { remoteOptions, tsConfig, mapComponentsToExpose } = retrieveRemoteConfig(options)
   return {
     name: 'native-federation-typescript/remote',
     async writeBundle() {

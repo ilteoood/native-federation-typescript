@@ -39,7 +39,7 @@ export const resolveExposes = (remoteOptions: RemoteOptions) => {
         }, {} as Record<string, string>);
 }
 
-export const retrieveConfig = (options: RemoteOptions) => {
+export const retrieveRemoteConfig = (options: RemoteOptions) => {
     if (!options.moduleFederationConfig) {
         throw new Error('moduleFederationConfig is required')
     }
