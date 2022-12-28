@@ -3,6 +3,7 @@ import { createUnplugin } from "unplugin";
 
 import { retrieveHostConfig } from "./configutations/hostPlugin";
 import { retrieveRemoteConfig } from "./configutations/remotePlugin";
+import { HostOptions } from "./interfaces/HostOptions";
 import { RemoteOptions } from "./interfaces/RemoteOptions";
 import { createTypesArchive, downloadTypesArchive } from "./lib/archiveHandler";
 import { compileTs } from "./lib/typeScriptCompiler";
@@ -23,12 +24,12 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
   }
 })
 
-export const NativeFederationTypeScriptHost = createUnplugin((options: RemoteOptions) => {
+export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptions) => {
   const { hostOptions, mapRemotesToDownload } = retrieveHostConfig(options)
   return {
     name: 'native-federation-typescript/remote',
     async writeBundle() {
-      if (hostOptions.deleteTypesFolders) {
+      if (hostOptions.deleteTypesFolder) {
         await rm(hostOptions.typesFolder, { recursive: true })
       }
 
