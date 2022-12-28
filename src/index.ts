@@ -27,7 +27,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
 export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptions) => {
   const { hostOptions, mapRemotesToDownload } = retrieveHostConfig(options)
   return {
-    name: 'native-federation-typescript/remote',
+    name: 'native-federation-typescript/host',
     async writeBundle() {
       if (hostOptions.deleteTypesFolder) {
         await rm(hostOptions.typesFolder, { recursive: true })
