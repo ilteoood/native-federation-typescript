@@ -5,7 +5,9 @@ import { RemoteOptions } from "../interfaces/RemoteOptions";
 
 const defaultOptions = {
     tsConfigPath: './tsconfig.json',
-    typesFolder: '@mf-types'
+    typesFolder: '@mf-types',
+    compiledTypesFolder: 'compiled-types',
+    deleteTypesFolder: true,
 }
 
 const readTsConfig = ({ tsConfigPath, typesFolder }: Required<RemoteOptions>): typescript.CompilerOptions => {

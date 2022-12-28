@@ -23,7 +23,9 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
     async writeBundle() {
       compileTs(mapComponentsToExpose, tsConfig)
       await createTypesArchive(tsConfig, remoteOptions)
-      await rm(tsConfig.outDir!, {recursive: true})
+      if(remoteOptions.deleteTypesFolder) {
+        await rm(tsConfig.outDir!, {recursive: true})
+      }
     }
   }
 })
