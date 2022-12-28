@@ -5,7 +5,7 @@ Bundler agnostic plugin to share federated types.
 ## Install
 
 ```bash
-npm i native-federation-typescript
+npm i -D native-federation-typescript
 ```
 
 <details>
@@ -20,6 +20,22 @@ export default defineConfig({
     NativeFederationTypeScriptRemote({ /* options */ }),
     NativeFederationTypeScriptHost({ /* options */ }),
   ],
+  /* ... */
+  server: { // This is needed to emulate the devServer.static.directory of WebPack and correctly serve the zip file
+    /* ... */
+    proxy: {
+      '/@mf-types.zip': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          rewrite: () => `/@fs/${process.cwd()}/dist/@mf-types.zip`
+      }
+    },
+    fs: {
+      /* ... */
+      allow: ['./dist']
+      /* ... */
+    }
+  }
 })
 ```
 
@@ -51,6 +67,14 @@ export default {
 const {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} = require('native-federation-typescript/webpack')
 module.exports = {
   /* ... */
+  devServer: {
+    /* ... */
+     static: {
+      directory: path.join(__dirname, 'dist') // This is needed to correctly expose the zip during development
+    }
+    /* ... */
+  },
+  /* ... */
   plugins: [
     NativeFederationTypeScriptRemote({ /* options */ }),
     NativeFederationTypeScriptHost({ /* options */ })
@@ -75,9 +99,11 @@ build({
 
 <br></details>
 
-## Options
+## Configuration
 
-### NativeFederationTypeScriptHost
+### Options
+
+#### NativeFederationTypeScriptHost
 
 ```typescript
 {
@@ -87,7 +113,7 @@ build({
 }
 ```
 
-### NativeFederationTypeScriptRemote
+#### NativeFederationTypeScriptRemote
 
 ```typescript
 {
@@ -98,3 +124,20 @@ build({
     deleteTypesFolder?: boolean; // indicate if the types folder will be deleted when the job completes, default is 'true'
 }
 ```
+
+### Types usage
+
+To have the type definitions automatically found for imports, add paths to the `compilerOptions` in the `tsconfig.json`:
+
+```json
+{  
+  "paths": {
+    "*": ["./@mf-types/*"]
+  }
+}
+```
+
+## Examples
+
+To use it in a `host` module, refer to [this example](https://github.com/ilteoood/module-federation-typescript/tree/host).  
+To use it in a `remote` module, refer to [this example](https://github.com/ilteoood/module-federation-typescript/tree/remote).
