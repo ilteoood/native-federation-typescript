@@ -25,25 +25,33 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
     name: 'native-federation-typescript/remote',
     async writeBundle() {
       compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
+
       await createTypesArchive(tsConfig, remoteOptions)
-      if(remoteOptions.deleteTypesFolder) {
-        await rm(tsConfig.outDir!, {recursive: true})
+
+      if (remoteOptions.deleteTypesFolder) {
+        await rm(tsConfig.outDir!, { recursive: true })
       }
     }
   }
 })
+
+const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) => (reason: any) => {
+  console.error(`Unable to download federated types for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`)
+  throw reason
+}
 
 export const NativeFederationTypeScriptHost = createUnplugin((options: RemoteOptions) => {
   const { hostOptions, mapRemotesToDownload } = retrieveHostConfig(options)
   return {
     name: 'native-federation-typescript/remote',
     async writeBundle() {
-      if(hostOptions.deleteTypesFolders) {
-        await rm(hostOptions.typesFolder, {recursive: true})
+      if (hostOptions.deleteTypesFolders) {
+        await rm(hostOptions.typesFolder, { recursive: true })
       }
 
       const downloadPromises = Object.entries(mapRemotesToDownload).map(async ([destinationFolder, fileToDownload]) => {
-        const response = await axios.get(fileToDownload, {responseType: 'arraybuffer'})
+        const response = await axios.get(fileToDownload, { responseType: 'arraybuffer' }).catch(downloadErrorLogger(destinationFolder, fileToDownload))
+
         const destinationPath = path.join(hostOptions.typesFolder, destinationFolder)
 
         const zip = new AdmZip(Buffer.from(response.data))
