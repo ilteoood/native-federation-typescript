@@ -29,8 +29,8 @@ const resolveWithExtension = (exposedPath: string) => {
     return undefined
 }
 
-export const resolveExposes = (userOptions: RemoteOptions) => {
-    return Object.entries(userOptions.moduleFederationConfig.exposes as Record<string, string>)
+export const resolveExposes = (remoteOptions: RemoteOptions) => {
+    return Object.entries(remoteOptions.moduleFederationConfig.exposes as Record<string, string>)
         .reduce((accumulator, [exposedEntry, exposedPath]) => {
             accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
             return accumulator
@@ -42,13 +42,13 @@ export const retrieveConfig = (options: RemoteOptions) => {
         throw new Error('moduleFederationConfig is required')
     }
 
-    const userOptions: Required<RemoteOptions> = { ...defaultOptions, ...options }
-    const mapComponentsToExpose = resolveExposes(userOptions)
-    const tsConfig = readTsConfig(userOptions)
+    const remoteOptions: Required<RemoteOptions> = { ...defaultOptions, ...options }
+    const mapComponentsToExpose = resolveExposes(remoteOptions)
+    const tsConfig = readTsConfig(remoteOptions)
 
     return {
         tsConfig,
         mapComponentsToExpose,
-        userOptions
+        remoteOptions
     }
 }
