@@ -6,7 +6,7 @@ import {retrieveRemoteConfig} from './configutations/remotePlugin'
 import {HostOptions} from './interfaces/HostOptions'
 import {RemoteOptions} from './interfaces/RemoteOptions'
 import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
-import {compileTs} from './lib/typeScriptCompiler'
+import {compileTs, retrieveMfTypesPath} from './lib/typeScriptCompiler'
 
 export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
   const {remoteOptions, tsConfig, mapComponentsToExpose} = retrieveRemoteConfig(options)
@@ -18,7 +18,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
       await createTypesArchive(tsConfig, remoteOptions)
 
       if (remoteOptions.deleteTypesFolder) {
-        await rm(tsConfig.outDir!, {recursive: true})
+        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true})
       }
     }
   }
