@@ -74,3 +74,27 @@ build({
 ```
 
 <br></details>
+
+## Options
+
+### NativeFederationTypeScriptHost
+
+```typescript
+{
+    moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
+    typesFolder?: string; // folder where all the files will be stored, default is '@mf-types',
+    deleteTypesFolder?: boolean; // indicate if the types folder will be deleted before the job starts, default is 'true'
+}
+```
+
+### NativeFederationTypeScriptRemote
+
+```typescript
+{
+    moduleFederationConfig: any; // the configuration same configuration provided to the module federation plugin, it is MANDATORY
+    tsConfigPath?: string; // path where the tsconfig file is located, default is ''./tsconfig.json'
+    typesFolder?: string; // folder where all the files will be stored, default is '@mf-types',
+    compiledTypesFolder?: string; // folder where the federated modules types will be stored, default is 'compiled-types'
+    deleteTypesFolder?: boolean; // indicate if the types folder will be deleted when the job completes, default is 'true'
+}
+```
