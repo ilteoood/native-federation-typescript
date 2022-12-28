@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import typescript from "typescript";
-import { RemoteOptions } from "../interfaces/RemoteOptions";
+import fs from 'fs'
+import path from 'path'
+import typescript from 'typescript'
+import {RemoteOptions} from '../interfaces/RemoteOptions'
 
 const defaultOptions = {
     tsConfigPath: './tsconfig.json',
@@ -10,14 +10,14 @@ const defaultOptions = {
     deleteTypesFolder: true,
 }
 
-const readTsConfig = ({ tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {
+const readTsConfig = ({tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {
     const resolvedTsConfigPath = path.resolve(tsConfigPath)
 
-    const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile);
-    const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath));
-    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder);
+    const readResult = typescript.readConfigFile(path.basename(resolvedTsConfigPath), typescript.sys.readFile)
+    const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath))
+    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder)
 
-    return { ...configContent.options, emitDeclarationOnly: true, noEmit: false, declaration: true, outDir };
+    return {...configContent.options, emitDeclarationOnly: true, noEmit: false, declaration: true, outDir}
 }
 
 const TS_EXTENSIONS = ['ts', 'tsx']
@@ -36,7 +36,7 @@ export const resolveExposes = (remoteOptions: RemoteOptions) => {
         .reduce((accumulator, [exposedEntry, exposedPath]) => {
             accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
             return accumulator
-        }, {} as Record<string, string>);
+        }, {} as Record<string, string>)
 }
 
 export const retrieveRemoteConfig = (options: RemoteOptions) => {
@@ -44,7 +44,7 @@ export const retrieveRemoteConfig = (options: RemoteOptions) => {
         throw new Error('moduleFederationConfig is required')
     }
 
-    const remoteOptions: Required<RemoteOptions> = { ...defaultOptions, ...options }
+    const remoteOptions: Required<RemoteOptions> = {...defaultOptions, ...options}
     const mapComponentsToExpose = resolveExposes(remoteOptions)
     const tsConfig = readTsConfig(remoteOptions)
 

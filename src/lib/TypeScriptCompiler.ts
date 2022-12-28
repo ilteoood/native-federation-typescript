@@ -1,22 +1,22 @@
-import path from "path";
-import typescript from "typescript";
-import { RemoteOptions } from "../interfaces/RemoteOptions";
+import path from 'path'
+import typescript from 'typescript'
+import {RemoteOptions} from '../interfaces/RemoteOptions'
 
 const STARTS_WITH_SLASH = /^\//
 
 const DEFINITION_FILE_EXTENSION = '.d.ts'
 
 const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
-    const { line } = diagnostic.file!.getLineAndCharacterOfPosition(diagnostic.start!);
+    const {line} = diagnostic.file!.getLineAndCharacterOfPosition(diagnostic.start!)
 
-    console.error(`TS Error ${diagnostic.code}':' ${typescript.flattenDiagnosticMessageText(diagnostic.messageText, typescript.sys.newLine)}`);
-    console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`);
+    console.error(`TS Error ${diagnostic.code}':' ${typescript.flattenDiagnosticMessageText(diagnostic.messageText, typescript.sys.newLine)}`)
+    console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`)
 }
 
 export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '')
 
 const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
-    const host = typescript.createCompilerHost(tsConfig);
+    const host = typescript.createCompilerHost(tsConfig)
     const originalWriteFile = host.writeFile
     const mapExposeToEntry = Object.fromEntries(Object.entries(mapComponentsToExpose).map(entry => entry.reverse()))
     const mfTypePath = retrieveMfTypesPath(tsConfig, remoteOptions)
@@ -41,6 +41,6 @@ export const compileTs = (mapComponentsToExpose: Record<string, string>, tsConfi
     const tsHost = createHost(mapComponentsToExpose, tsConfig, remoteOptions)
     const tsProgram = typescript.createProgram(Object.values(mapComponentsToExpose), tsConfig, tsHost)
 
-    const { diagnostics = [] } = tsProgram.emit()
+    const {diagnostics = []} = tsProgram.emit()
     diagnostics.forEach(reportCompileDiagnostic)
 }
