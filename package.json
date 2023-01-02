@@ -33,9 +33,11 @@
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsup src/*.ts --format cjs,esm --dts --splitting --clean --minify",
     "lint": "eslint src --ext .ts",
     "test": "vitest"
