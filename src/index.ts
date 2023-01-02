@@ -1,4 +1,6 @@
 import {rm} from 'fs/promises'
+import path from 'path'
+import {mergeDeepRight} from 'rambda'
 import {createUnplugin} from 'unplugin'
 
 import {retrieveHostConfig} from './configutations/hostPlugin'
@@ -6,7 +8,7 @@ import {retrieveRemoteConfig} from './configutations/remotePlugin'
 import {HostOptions} from './interfaces/HostOptions'
 import {RemoteOptions} from './interfaces/RemoteOptions'
 import {createTypesArchive, downloadTypesArchive} from './lib/archiveHandler'
-import {compileTs, retrieveMfTypesPath} from './lib/typeScriptCompiler'
+import {compileTs, retrieveMfTypesPath, retrieveOriginalOutDir} from './lib/typeScriptCompiler'
 
 export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteOptions) => {
   const {remoteOptions, tsConfig, mapComponentsToExpose} = retrieveRemoteConfig(options)
@@ -20,6 +22,13 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
       if (remoteOptions.deleteTypesFolder) {
         await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
       }
+    },
+    webpack: compiler => {
+      compiler.options.devServer = mergeDeepRight(compiler.options.devServer, {
+        static: {
+          directory: path.resolve(retrieveOriginalOutDir(tsConfig, remoteOptions))
+        }
+      })
     }
   }
 })

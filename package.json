@@ -48,6 +48,7 @@
   "dependencies": {
     "adm-zip": "^0.5.10",
     "axios": "^1.2.2",
+    "rambda": "^7.4.0",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4",
     "unplugin": "^1.0.1"

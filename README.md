@@ -23,6 +23,10 @@ This plugin is used to build the federated types.
     deleteTypesFolder?: boolean; // indicate if the types folder will be deleted when the job completes, default is 'true'
 }
 ```
+
+#### Additional configuration
+Note that, for Webpack, the plugin automatically inject the `devServer.static.directory` configuration.
+
 ### NativeFederationTypeScriptHost
 This plugin is used to download the federated types.
 
@@ -95,14 +99,6 @@ export default {
 // webpack.config.js
 const {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} = require('native-federation-typescript/webpack')
 module.exports = {
-  /* ... */
-  devServer: {
-    /* ... */
-     static: {
-      directory: path.join(__dirname, 'dist') // This is needed to correctly expose the zip during development
-    }
-    /* ... */
-  },
   /* ... */
   plugins: [
     NativeFederationTypeScriptRemote({ /* options */ }),

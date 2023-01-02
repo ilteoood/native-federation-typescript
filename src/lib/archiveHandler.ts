@@ -14,7 +14,7 @@ export const createTypesArchive = async (tsConfig: typescript.CompilerOptions, r
 
     const zip = new AdmZip()
     zip.addLocalFolder(mfTypesPath)
-    await zip.writeZipPromise(retrieveTypesZipPath(mfTypesPath, remoteOptions))
+    return zip.writeZipPromise(retrieveTypesZipPath(mfTypesPath, remoteOptions))
 }
 
 const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) => (reason: any) => {
