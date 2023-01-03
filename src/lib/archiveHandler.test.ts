@@ -1,32 +1,34 @@
+import AdmZip from 'adm-zip'
+import axios from 'axios'
 import {existsSync, mkdirSync, mkdtempSync, rmSync} from 'fs'
 import os from 'os'
 import path from 'path'
-import {afterAll, describe, expect, it} from 'vitest'
+import {afterAll, describe, expect, it, vi} from 'vitest'
 
 import {RemoteOptions} from '../interfaces/RemoteOptions'
-import {createTypesArchive} from './archiveHandler'
+import {createTypesArchive, downloadTypesArchive} from './archiveHandler'
 
 describe('archiveHandler', () => {
     const tmpDir = mkdtempSync(path.join(os.tmpdir(), 'archive-handler'))
     const tsConfig = {
-        outDir: path.join(tmpDir, 'typesFolder', 'compiledTypesFolder')
+        outDir: path.join(tmpDir, 'typesRemoteFolder', 'compiledTypesFolder')
     }
 
     mkdirSync(tsConfig.outDir, {recursive: true})
-
-    const remoteOptions: Required<RemoteOptions> = {
-        compiledTypesFolder: 'compiledTypesFolder',
-        typesFolder: 'typesFolder',
-        moduleFederationConfig: {},
-        tsConfigPath: './tsconfig.json',
-        deleteTypesFolder: false
-    }
 
     afterAll(() => {
         rmSync(tmpDir, {recursive: true})
     })
 
     describe('createTypesArchive', () => {
+        const remoteOptions: Required<RemoteOptions> = {
+            compiledTypesFolder: 'compiledTypesFolder',
+            typesFolder: 'typesRemoteFolder',
+            moduleFederationConfig: {},
+            tsConfigPath: './tsconfig.json',
+            deleteTypesFolder: false
+        }
+
         it('correctly creates archive', async () => {
             const archivePath = path.join(tmpDir, `${remoteOptions.typesFolder}.zip`)
 
@@ -36,8 +38,31 @@ describe('archiveHandler', () => {
             expect(existsSync(archivePath)).toBeTruthy()
         })
 
-        it('throw for unexisting outDir', async () => {
+        it('throws for unexisting outDir', async () => {
             expect(createTypesArchive({...tsConfig, outDir: '/foo'}, remoteOptions)).rejects.toThrowError()
+        })
+    })
+
+    describe('downloadTypesArchive', () => {
+        const hostOptions = {
+            moduleFederationConfig: {},
+            typesFolder: tmpDir,
+            deleteTypesFolder: true
+        }
+
+        it('throws for unexisting url', async () => {
+            expect(downloadTypesArchive(hostOptions)([tmpDir, 'https://foo.it'])).rejects.toThrowError('getaddrinfo ENOTFOUND foo.it')
+        })
+
+        it('correctly extract downloaded archive', async () => {
+            const archivePath = path.join(tmpDir, 'typesHostFolder')
+            const zip = new AdmZip()
+            await zip.addLocalFolderPromise(tmpDir, {})
+
+            axios.get = vi.fn().mockResolvedValueOnce({data: zip.toBuffer()})
+
+            await downloadTypesArchive(hostOptions)(['typesHostFolder', 'https://foo.it'])
+            expect(existsSync(archivePath)).toBeTruthy()
         })
     })
 })
