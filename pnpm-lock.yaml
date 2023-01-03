@@ -12,6 +12,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-simple-import-sort: ^8.0.0
   prettier: ^2.8.1
+  rambda: ^7.4.0
   tsup: ^6.5.0
   typescript: ^4.9.4
   unplugin: ^1.0.1
@@ -20,6 +21,7 @@ specifiers:
 dependencies:
   adm-zip: 0.5.10
   axios: 1.2.2
+  rambda: 7.4.0
   tsup: 6.5.0_typescript@4.9.4
   typescript: 4.9.4
   unplugin: 1.0.1
@@ -1679,6 +1681,10 @@ packages:
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  /rambda/7.4.0:
+    resolution: {integrity: sha512-A9hihu7dUTLOUCM+I8E61V4kRXnN4DwYeK0DwCBydC1MqNI1PidyAtbtpsJlBBzK4icSctEcCQ1bGcLpBuETUQ==}
+    dev: false
 
   /readdirp/3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}

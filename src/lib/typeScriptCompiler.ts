@@ -14,7 +14,8 @@ const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
     console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`)
 }
 
-export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '')
+export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => path.normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, ''))
+export const retrieveOriginalOutDir = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => path.normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '').replace(remoteOptions.typesFolder, ''))
 
 const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
     const host = typescript.createCompilerHost(tsConfig)
