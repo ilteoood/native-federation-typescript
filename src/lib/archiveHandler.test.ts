@@ -2,16 +2,16 @@ import AdmZip from 'adm-zip'
 import axios from 'axios'
 import {existsSync, mkdirSync, mkdtempSync, rmSync} from 'fs'
 import os from 'os'
-import path from 'path'
+import {join} from 'path'
 import {afterAll, describe, expect, it, vi} from 'vitest'
 
 import {RemoteOptions} from '../interfaces/RemoteOptions'
 import {createTypesArchive, downloadTypesArchive} from './archiveHandler'
 
 describe('archiveHandler', () => {
-    const tmpDir = mkdtempSync(path.join(os.tmpdir(), 'archive-handler'))
+    const tmpDir = mkdtempSync(join(os.tmpdir(), 'archive-handler'))
     const tsConfig = {
-        outDir: path.join(tmpDir, 'typesRemoteFolder', 'compiledTypesFolder')
+        outDir: join(tmpDir, 'typesRemoteFolder', 'compiledTypesFolder')
     }
 
     mkdirSync(tsConfig.outDir, {recursive: true})
@@ -30,7 +30,7 @@ describe('archiveHandler', () => {
         }
 
         it('correctly creates archive', async () => {
-            const archivePath = path.join(tmpDir, `${remoteOptions.typesFolder}.zip`)
+            const archivePath = join(tmpDir, `${remoteOptions.typesFolder}.zip`)
 
             const archiveCreated = await createTypesArchive(tsConfig, remoteOptions)
 
@@ -55,7 +55,7 @@ describe('archiveHandler', () => {
         })
 
         it('correctly extract downloaded archive', async () => {
-            const archivePath = path.join(tmpDir, 'typesHostFolder')
+            const archivePath = join(tmpDir, 'typesHostFolder')
             const zip = new AdmZip()
             await zip.addLocalFolderPromise(tmpDir, {})
 
