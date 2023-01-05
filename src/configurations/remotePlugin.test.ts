@@ -52,6 +52,7 @@ describe('hostPlugin', () => {
                 })
 
                 expect(remoteOptions).toStrictEqual({
+                    additionalFilesToCompile: [],
                     tsConfigPath: './tsconfig.json',
                     typesFolder: '@mf-types',
                     compiledTypesFolder: 'compiled-types',
@@ -92,6 +93,7 @@ describe('hostPlugin', () => {
                 })
 
                 expect(remoteOptions).toStrictEqual({
+                    additionalFilesToCompile: [],
                     tsConfigPath,
                     typesFolder: 'typesFolder',
                     compiledTypesFolder: 'compiledTypesFolder',

@@ -41,7 +41,8 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
 
 export const compileTs = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
     const tsHost = createHost(mapComponentsToExpose, tsConfig, remoteOptions)
-    const tsProgram = typescript.createProgram(Object.values(mapComponentsToExpose), tsConfig, tsHost)
+    const filesToCompile = [...Object.values(mapComponentsToExpose), ...remoteOptions.additionalFilesToCompile]
+    const tsProgram = typescript.createProgram(filesToCompile, tsConfig, tsHost)
 
     const {diagnostics = []} = tsProgram.emit()
     diagnostics.forEach(reportCompileDiagnostic)
