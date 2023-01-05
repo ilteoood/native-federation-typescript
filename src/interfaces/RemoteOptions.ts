@@ -4,4 +4,5 @@ export interface RemoteOptions {
     typesFolder?: string;
     compiledTypesFolder?: string;
     deleteTypesFolder?: boolean;
+    additionalFilesToCompile?: string[]
 }

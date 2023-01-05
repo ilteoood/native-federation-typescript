@@ -9,6 +9,7 @@ const defaultOptions = {
     typesFolder: '@mf-types',
     compiledTypesFolder: 'compiled-types',
     deleteTypesFolder: true,
+    additionalFilesToCompile: []
 }
 
 const readTsConfig = ({tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {

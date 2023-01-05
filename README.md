@@ -21,6 +21,7 @@ This plugin is used to build the federated types.
     typesFolder?: string; // folder where all the files will be stored, default is '@mf-types',
     compiledTypesFolder?: string; // folder where the federated modules types will be stored, default is 'compiled-types'
     deleteTypesFolder?: boolean; // indicate if the types folder will be deleted when the job completes, default is 'true'
+    additionalFilesToCompile?: stringp[] // The path of each additional file which should be emitted
 }
 ```
 
