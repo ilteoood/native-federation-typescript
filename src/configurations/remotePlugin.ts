@@ -1,5 +1,5 @@
 import fs from 'fs'
-import path from 'path'
+import {dirname, join, resolve} from 'path'
 import typescript from 'typescript'
 
 import {RemoteOptions} from '../interfaces/RemoteOptions'
@@ -13,11 +13,11 @@ const defaultOptions = {
 }
 
 const readTsConfig = ({tsConfigPath, typesFolder, compiledTypesFolder}: Required<RemoteOptions>): typescript.CompilerOptions => {
-    const resolvedTsConfigPath = path.resolve(tsConfigPath)
+    const resolvedTsConfigPath = resolve(tsConfigPath)
 
     const readResult = typescript.readConfigFile(resolvedTsConfigPath, typescript.sys.readFile)
-    const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, path.dirname(resolvedTsConfigPath))
-    const outDir = path.join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder)
+    const configContent = typescript.parseJsonConfigFileContent(readResult.config, typescript.sys, dirname(resolvedTsConfigPath))
+    const outDir = join(configContent.options.outDir || 'dist', typesFolder, compiledTypesFolder)
 
     return {...configContent.options, emitDeclarationOnly: true, noEmit: false, declaration: true, outDir}
 }
@@ -27,7 +27,7 @@ const TS_EXTENSIONS = ['ts', 'tsx']
 const resolveWithExtension = (exposedPath: string) => {
     const cwd = process.cwd()
     for (const extension of TS_EXTENSIONS) {
-        const exposedPathWithExtension = path.join(cwd, `${exposedPath}.${extension}`)
+        const exposedPathWithExtension = join(cwd, `${exposedPath}.${extension}`)
         if (fs.existsSync(exposedPathWithExtension)) return exposedPathWithExtension
     }
     return undefined
@@ -36,7 +36,7 @@ const resolveWithExtension = (exposedPath: string) => {
 const resolveExposes = (remoteOptions: RemoteOptions) => {
     return Object.entries(remoteOptions.moduleFederationConfig.exposes as Record<string, string>)
         .reduce((accumulator, [exposedEntry, exposedPath]) => {
-            accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(path.join(exposedPath, 'index')) || exposedPath
+            accumulator[exposedEntry] = resolveWithExtension(exposedPath) || resolveWithExtension(join(exposedPath, 'index')) || exposedPath
             return accumulator
         }, {} as Record<string, string>)
 }

@@ -1,4 +1,4 @@
-import path from 'path'
+import {join} from 'path'
 import {describe, expect, it} from 'vitest'
 
 import {retrieveRemoteConfig} from './remotePlugin'
@@ -62,7 +62,7 @@ describe('hostPlugin', () => {
             })
 
             it('all options provided', () => {
-                const tsConfigPath = path.join(__dirname, 'tsconfig.test.json')
+                const tsConfigPath = join(__dirname, 'tsconfig.test.json')
                 const {tsConfig, mapComponentsToExpose, remoteOptions} = retrieveRemoteConfig({
                     moduleFederationConfig,
                     tsConfigPath,

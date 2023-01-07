@@ -1,5 +1,5 @@
 import {rm} from 'fs/promises'
-import path from 'path'
+import {resolve} from 'path'
 import {mergeDeepRight} from 'rambda'
 import {createUnplugin} from 'unplugin'
 
@@ -26,7 +26,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
     webpack: compiler => {
       compiler.options.devServer = mergeDeepRight(compiler.options.devServer, {
         static: {
-          directory: path.resolve(retrieveOriginalOutDir(tsConfig, remoteOptions))
+          directory: resolve(retrieveOriginalOutDir(tsConfig, remoteOptions))
         }
       })
     }

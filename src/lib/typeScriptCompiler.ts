@@ -1,4 +1,4 @@
-import path from 'path'
+import {join, normalize, relative} from 'path'
 import typescript from 'typescript'
 
 import {RemoteOptions} from '../interfaces/RemoteOptions'
@@ -14,8 +14,8 @@ const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
     console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`)
 }
 
-export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => path.normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, ''))
-export const retrieveOriginalOutDir = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => path.normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '').replace(remoteOptions.typesFolder, ''))
+export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, ''))
+export const retrieveOriginalOutDir = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, '').replace(remoteOptions.typesFolder, ''))
 
 const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
     const host = typescript.createCompilerHost(tsConfig)
@@ -29,8 +29,8 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
         for (const sourceFile of sourceFiles || []) {
             const sourceEntry = mapExposeToEntry[sourceFile.fileName]
             if (sourceEntry) {
-                const mfeTypeEntry = path.join(mfTypePath, `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
-                const relativePathToOutput = path.relative(mfTypePath, filepath).replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, '')
+                const mfeTypeEntry = join(mfTypePath, `${sourceEntry}${DEFINITION_FILE_EXTENSION}`)
+                const relativePathToOutput = relative(mfTypePath, filepath).replace(DEFINITION_FILE_EXTENSION, '').replace(STARTS_WITH_SLASH, '')
                 originalWriteFile(mfeTypeEntry, `export * from './${relativePathToOutput}';\nexport { default } from './${relativePathToOutput}';`, writeOrderByteMark)
             }
         }
