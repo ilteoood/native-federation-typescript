@@ -1,13 +1,13 @@
 import AdmZip from 'adm-zip'
 import axios from 'axios'
-import path from 'path'
+import {join} from 'path'
 import typescript from 'typescript'
 
 import {HostOptions} from '../interfaces/HostOptions'
 import {RemoteOptions} from '../interfaces/RemoteOptions'
 import {retrieveMfTypesPath} from './typeScriptCompiler'
 
-const retrieveTypesZipPath = (mfTypesPath: string, remoteOptions: Required<RemoteOptions>) => path.join(mfTypesPath.replace(remoteOptions.typesFolder, ''), `${remoteOptions.typesFolder}.zip`)
+const retrieveTypesZipPath = (mfTypesPath: string, remoteOptions: Required<RemoteOptions>) => join(mfTypesPath.replace(remoteOptions.typesFolder, ''), `${remoteOptions.typesFolder}.zip`)
 
 export const createTypesArchive = async (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
     const mfTypesPath = retrieveMfTypesPath(tsConfig, remoteOptions)
@@ -25,7 +25,7 @@ const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) 
 export const downloadTypesArchive = (hostOptions: Required<HostOptions>) => async ([destinationFolder, fileToDownload]: string[]) => {
     const response = await axios.get(fileToDownload, {responseType: 'arraybuffer'}).catch(downloadErrorLogger(destinationFolder, fileToDownload))
 
-    const destinationPath = path.join(hostOptions.typesFolder, destinationFolder)
+    const destinationPath = join(hostOptions.typesFolder, destinationFolder)
 
     const zip = new AdmZip(Buffer.from(response.data))
     zip.extractAllTo(destinationPath, true)
