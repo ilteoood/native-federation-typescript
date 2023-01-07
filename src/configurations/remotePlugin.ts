@@ -1,4 +1,4 @@
-import fs from 'fs'
+import {existsSync} from 'fs'
 import {dirname, join, resolve} from 'path'
 import typescript from 'typescript'
 
@@ -28,7 +28,7 @@ const resolveWithExtension = (exposedPath: string) => {
     const cwd = process.cwd()
     for (const extension of TS_EXTENSIONS) {
         const exposedPathWithExtension = join(cwd, `${exposedPath}.${extension}`)
-        if (fs.existsSync(exposedPathWithExtension)) return exposedPathWithExtension
+        if (existsSync(exposedPathWithExtension)) return exposedPathWithExtension
     }
     return undefined
 }
