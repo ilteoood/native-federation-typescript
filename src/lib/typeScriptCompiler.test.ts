@@ -20,11 +20,15 @@ describe('typeScriptCompiler', () => {
 
     it('retrieveMfTypesPath correctly calculate path', () => {
         const expectedPath = join('foo', 'typesRemoteFolder') + sep
-        expect(retrieveMfTypesPath(tsConfig, remoteOptions)).toBe(expectedPath)
+        const retrievedMfTypesPath = retrieveMfTypesPath(tsConfig, remoteOptions)
+
+        expect(retrievedMfTypesPath).toBe(expectedPath)
     })
 
     it('retrieveOriginalOutDir correctly calculate path', () => {
         const expectedPath = 'foo' + sep
-        expect(retrieveOriginalOutDir(tsConfig, remoteOptions)).toBe(expectedPath)
+        const retrievedOriginalOutDir = retrieveOriginalOutDir(tsConfig, remoteOptions)
+
+        expect(retrievedOriginalOutDir).toBe(expectedPath)
     })
 })
