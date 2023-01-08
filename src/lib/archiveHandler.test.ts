@@ -22,6 +22,7 @@ describe('archiveHandler', () => {
 
     describe('createTypesArchive', () => {
         const remoteOptions: Required<RemoteOptions> = {
+            additionalFilesToCompile: [],
             compiledTypesFolder: 'compiledTypesFolder',
             typesFolder: 'typesRemoteFolder',
             moduleFederationConfig: {},

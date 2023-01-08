@@ -10,6 +10,7 @@ describe('typeScriptCompiler', () => {
     }
 
     const remoteOptions: Required<RemoteOptions> = {
+        additionalFilesToCompile: [],
         compiledTypesFolder: 'compiledTypesFolder',
         typesFolder: 'typesRemoteFolder',
         moduleFederationConfig: {},
