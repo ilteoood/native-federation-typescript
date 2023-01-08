@@ -40,7 +40,7 @@
     "prepare": "npm run build",
     "build": "tsup src/*.ts --format cjs,esm --dts --splitting --clean --minify",
     "lint": "eslint src --ext .ts",
-    "test": "vitest"
+    "test": "vitest --coverage"
   },
   "keywords": [],
   "author": "Matteo Pietro Dazzi",
@@ -58,6 +58,7 @@
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
+    "@vitest/coverage-c8": "^0.26.3",
     "directory-tree": "^3.5.1",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
