@@ -38,7 +38,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsup src/*.ts --format cjs,esm --dts --splitting --clean --minify",
+    "build": "tsup",
     "lint": "eslint src --ext .ts",
     "test": "vitest --coverage"
   },
