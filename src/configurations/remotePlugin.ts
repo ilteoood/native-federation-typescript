@@ -22,7 +22,7 @@ const readTsConfig = ({tsConfigPath, typesFolder, compiledTypesFolder}: Required
     return {...configContent.options, emitDeclarationOnly: true, noEmit: false, declaration: true, outDir}
 }
 
-const TS_EXTENSIONS = ['ts', 'tsx']
+const TS_EXTENSIONS = ['ts', 'tsx', 'vue', 'svelte']
 
 const resolveWithExtension = (exposedPath: string) => {
     const cwd = process.cwd()
