@@ -2,7 +2,7 @@ import AdmZip from 'adm-zip'
 import axios from 'axios'
 import dirTree from 'directory-tree'
 import {rm} from 'fs/promises'
-import {join} from 'path'
+import {join, resolve} from 'path'
 import {UnpluginOptions} from 'unplugin'
 import {describe, expect, it, vi} from 'vitest'
 
@@ -72,6 +72,46 @@ describe('index', () => {
                         ],
                     },
                 ],
+            })
+        })
+
+        it('correctly enrich webpack config', async () => {
+            const options = {
+                moduleFederationConfig: {
+                    name: 'moduleFederationTypescript',
+                    filename: 'remoteEntry.js',
+                    exposes: {
+                        './index': './src/index.ts',
+                    },
+                    shared: {
+                        react: {singleton: true, eager: true},
+                        'react-dom': {singleton: true, eager: true}
+                    },
+                },
+                deleteTestsFolder: false,
+                testsFolder: '@mf-tests'
+            }
+
+            const webpackCompiler = {
+                options: {
+                    devServer: {
+                        foo: {}
+                    }
+                }
+            }
+
+            const unplugin = NativeFederationTypeScriptRemote.rollup(options) as UnpluginOptions
+            await unplugin.webpack?.(webpackCompiler)
+
+            expect(webpackCompiler).toStrictEqual({
+                options: {
+                    devServer: {
+                        foo: {},
+                        static: {
+                            directory: resolve('./dist')
+                        }
+                    }
+                }
             })
         })
     })
