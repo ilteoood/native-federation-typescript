@@ -65,5 +65,16 @@ describe('archiveHandler', () => {
             await downloadTypesArchive(hostOptions)(['typesHostFolder', 'https://foo.it'])
             expect(existsSync(archivePath)).toBeTruthy()
         })
+
+        it('correctly handle exception', async () => {
+            const message = 'Rejected value'
+
+            const zip = new AdmZip()
+            await zip.addLocalFolderPromise(tmpDir, {})
+
+            axios.get = vi.fn().mockRejectedValueOnce({message})
+
+            expect(() => downloadTypesArchive(hostOptions)(['typesHostFolder', 'https://foo.it'])).rejects.toThrowError(message)
+        })
     })
 })
