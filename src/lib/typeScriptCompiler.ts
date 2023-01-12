@@ -1,5 +1,6 @@
 import {join, normalize, relative} from 'path'
 import typescript from 'typescript'
+import vueTypescript from 'vue-tsc'
 
 import {RemoteOptions} from '../interfaces/RemoteOptions'
 
@@ -39,10 +40,21 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
     return host
 }
 
+const createProgram = (remoteOptions: Required<RemoteOptions>, programOptions: typescript.CreateProgramOptions) => {
+    switch(remoteOptions.compilerInstance) {
+        case 'tsc':
+            return typescript.createProgram(programOptions)
+        case 'vue-tsc':
+            return vueTypescript.createProgram(programOptions)
+    }
+}
+
 export const compileTs = (mapComponentsToExpose: Record<string, string>, tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => {
     const tsHost = createHost(mapComponentsToExpose, tsConfig, remoteOptions)
     const filesToCompile = [...Object.values(mapComponentsToExpose), ...remoteOptions.additionalFilesToCompile]
-    const tsProgram = typescript.createProgram(filesToCompile, tsConfig, tsHost)
+
+    const programOptions: typescript.CreateProgramOptions = {rootNames: filesToCompile, host: tsHost, options: tsConfig}
+    const tsProgram = createProgram(remoteOptions, programOptions)
 
     const {diagnostics = []} = tsProgram.emit()
     diagnostics.forEach(reportCompileDiagnostic)
