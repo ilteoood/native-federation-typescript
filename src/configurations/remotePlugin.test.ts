@@ -57,7 +57,8 @@ describe('hostPlugin', () => {
                     typesFolder: '@mf-types',
                     compiledTypesFolder: 'compiled-types',
                     deleteTypesFolder: true,
-                    moduleFederationConfig
+                    moduleFederationConfig,
+                    compilerInstance: 'tsc'
                 })
             })
 
@@ -68,7 +69,8 @@ describe('hostPlugin', () => {
                     tsConfigPath,
                     typesFolder: 'typesFolder',
                     compiledTypesFolder: 'compiledTypesFolder',
-                    deleteTypesFolder: false
+                    deleteTypesFolder: false,
+                    compilerInstance: 'vue-tsc'
                 })
 
                 expect(tsConfig).toStrictEqual({
@@ -98,7 +100,8 @@ describe('hostPlugin', () => {
                     typesFolder: 'typesFolder',
                     compiledTypesFolder: 'compiledTypesFolder',
                     deleteTypesFolder: false,
-                    moduleFederationConfig
+                    moduleFederationConfig,
+                    compilerInstance: 'vue-tsc'
                 })
             })
 
