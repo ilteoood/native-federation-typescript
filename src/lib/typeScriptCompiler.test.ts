@@ -20,7 +20,8 @@ describe('typeScriptCompiler', () => {
         typesFolder: 'typesRemoteFolder',
         moduleFederationConfig: {},
         tsConfigPath: './tsconfig.json',
-        deleteTypesFolder: false
+        deleteTypesFolder: false,
+        compilerInstance: 'tsc'
     }
 
     it('retrieveMfTypesPath correctly calculate path', () => {

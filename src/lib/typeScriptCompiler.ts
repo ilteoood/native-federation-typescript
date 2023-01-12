@@ -42,10 +42,11 @@ const createHost = (mapComponentsToExpose: Record<string, string>, tsConfig: typ
 
 const createProgram = (remoteOptions: Required<RemoteOptions>, programOptions: typescript.CreateProgramOptions) => {
     switch(remoteOptions.compilerInstance) {
-        case 'tsc':
-            return typescript.createProgram(programOptions)
         case 'vue-tsc':
             return vueTypescript.createProgram(programOptions)
+        case 'tsc':
+        default:
+            return typescript.createProgram(programOptions)
     }
 }
 
