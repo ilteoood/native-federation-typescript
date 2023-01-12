@@ -5,5 +5,5 @@ export interface RemoteOptions {
     compiledTypesFolder?: string;
     deleteTypesFolder?: boolean;
     additionalFilesToCompile?: string[];
-    compilerInstance?: 'tsc' | 'vue-tsc'
+    compilerInstance?: 'tsc' | 'vue-tsc';
 }

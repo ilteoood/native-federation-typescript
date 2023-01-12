@@ -51,12 +51,12 @@ describe('typeScriptCompiler', () => {
             expect(directoryStructure).toMatchObject({})
         })
 
-        it('file does not exists mapToExpose', () => {
-            const compile = () => compileTs({foo: './foo.ts'}, tsConfig, remoteOptions)
-            expect(compile).not.toThrow()
+        it('empty mapToExpose for vue-tsc', () => {
+          const compile = () => compileTs({}, {...tsConfig, emitDeclarationOnly: true}, {...remoteOptions, compilerInstance: 'vue-tsc'})
+          expect(compile).not.toThrow()
 
-            const directoryStructure = dirTree(join(tsConfig.outDir, '..'))
-            expect(directoryStructure).toMatchObject({})
+          const directoryStructure = dirTree(join(tsConfig.outDir, '..'))
+          expect(directoryStructure).toMatchObject({})
         })
 
         it('filled mapToExpose', () => {
