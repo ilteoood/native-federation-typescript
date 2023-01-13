@@ -1,6 +1,6 @@
 import AdmZip from 'adm-zip'
-import axios from 'axios'
 import ansiColors from 'ansi-colors'
+import axios from 'axios'
 import {join} from 'path'
 import typescript from 'typescript'
 
