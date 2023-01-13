@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import ansiColors from 'ansi-colors'
 import {rm} from 'fs/promises'
 import {resolve} from 'path'
 import {mergeDeepRight} from 'rambda'
@@ -25,7 +25,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
           await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
         }
       } catch(error) {
-        console.error(chalk.red(`Unable to compile federated types, ${error}`))
+        console.error(ansiColors.red(`Unable to compile federated types, ${error}`))
       }
     },
     webpack: compiler => {
@@ -45,7 +45,7 @@ export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptio
     async writeBundle() {
       if (hostOptions.deleteTypesFolder) {
         await rm(hostOptions.typesFolder, {recursive: true, force: true}).catch((error) =>
-          console.error(chalk.red(`Unable to remove types folder, ${error}`))
+          console.error(ansiColors.red(`Unable to remove types folder, ${error}`))
         )
       }
 

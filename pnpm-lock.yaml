@@ -7,8 +7,8 @@ specifiers:
   '@typescript-eslint/parser': ^5.48.1
   '@vitest/coverage-c8': ^0.27.0
   adm-zip: ^0.5.10
+  ansi-colors: ^4.1.3
   axios: ^1.2.2
-  chalk: ^5.2.0
   directory-tree: ^3.5.1
   eslint: ^8.31.0
   eslint-config-prettier: ^8.6.0
@@ -24,8 +24,8 @@ specifiers:
 
 dependencies:
   adm-zip: 0.5.10
+  ansi-colors: 4.1.3
   axios: 1.2.2
-  chalk: 5.2.0
   rambda: 7.4.0
   tsup: 6.5.0_typescript@4.9.4
   typescript: 4.9.4
@@ -680,6 +680,11 @@ packages:
       uri-js: 4.4.1
     dev: true
 
+  /ansi-colors/4.1.3:
+    resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
+    engines: {node: '>=6'}
+    dev: false
+
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -844,11 +849,6 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
     dev: true
-
-  /chalk/5.2.0:
-    resolution: {integrity: sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-    dev: false
 
   /check-error/1.0.2:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}

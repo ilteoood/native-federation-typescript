@@ -1,6 +1,6 @@
 import AdmZip from 'adm-zip'
 import axios from 'axios'
-import chalk from 'chalk'
+import ansiColors from 'ansi-colors'
 import {join} from 'path'
 import typescript from 'typescript'
 
@@ -19,7 +19,7 @@ export const createTypesArchive = async (tsConfig: typescript.CompilerOptions, r
 }
 
 const downloadErrorLogger = (destinationFolder: string, fileToDownload: string) => (reason: any) => {
-    console.error(chalk.red(`Unable to download federated types for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`))
+    console.error(ansiColors.red(`Unable to download federated types for '${destinationFolder}' from '${fileToDownload}' because '${reason.message}', skipping...`))
     throw reason
 }
 
