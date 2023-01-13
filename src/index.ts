@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import {rm} from 'fs/promises'
 import {resolve} from 'path'
 import {mergeDeepRight} from 'rambda'
@@ -15,12 +16,16 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
   return {
     name: 'native-federation-typescript/remote',
     async writeBundle() {
-      compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
+      try {
+        compileTs(mapComponentsToExpose, tsConfig, remoteOptions)
 
-      await createTypesArchive(tsConfig, remoteOptions)
+        await createTypesArchive(tsConfig, remoteOptions)
 
-      if (remoteOptions.deleteTypesFolder) {
-        await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
+        if (remoteOptions.deleteTypesFolder) {
+          await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
+        }
+      } catch(error) {
+        console.error(chalk.red(`Unable to compile federated types, ${error}`))
       }
     },
     webpack: compiler => {
@@ -39,7 +44,9 @@ export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptio
     name: 'native-federation-typescript/host',
     async writeBundle() {
       if (hostOptions.deleteTypesFolder) {
-        await rm(hostOptions.typesFolder, {recursive: true, force: true})
+        await rm(hostOptions.typesFolder, {recursive: true, force: true}).catch((error) =>
+          console.error(chalk.red(`Unable to remove types folder, ${error}`))
+        )
       }
 
       const typesDownloader = downloadTypesArchive(hostOptions)
