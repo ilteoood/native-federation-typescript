@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import {join, normalize, relative} from 'path'
 import typescript from 'typescript'
 import vueTypescript from 'vue-tsc'
@@ -11,8 +12,8 @@ const DEFINITION_FILE_EXTENSION = '.d.ts'
 const reportCompileDiagnostic = (diagnostic: typescript.Diagnostic): void => {
     const {line} = diagnostic.file!.getLineAndCharacterOfPosition(diagnostic.start!)
 
-    console.error(`TS Error ${diagnostic.code}':' ${typescript.flattenDiagnosticMessageText(diagnostic.messageText, typescript.sys.newLine)}`)
-    console.error(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`)
+    console.error(chalk.red(`TS Error ${diagnostic.code}':' ${typescript.flattenDiagnosticMessageText(diagnostic.messageText, typescript.sys.newLine)}`))
+    console.error(chalk.red(`         at ${diagnostic.file!.fileName}:${line + 1} typescript.sys.newLine`))
 }
 
 export const retrieveMfTypesPath = (tsConfig: typescript.CompilerOptions, remoteOptions: Required<RemoteOptions>) => normalize(tsConfig.outDir!.replace(remoteOptions.compiledTypesFolder, ''))
