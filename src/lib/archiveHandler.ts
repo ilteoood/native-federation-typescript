@@ -14,7 +14,7 @@ export const createTypesArchive = async (tsConfig: typescript.CompilerOptions, r
     const mfTypesPath = retrieveMfTypesPath(tsConfig, remoteOptions)
 
     const zip = new AdmZip()
-    await zip.addLocalFolderPromise(mfTypesPath, {})
+    zip.addLocalFolder(mfTypesPath)
     return zip.writeZipPromise(retrieveTypesZipPath(mfTypesPath, remoteOptions))
 }
 
