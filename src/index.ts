@@ -24,6 +24,7 @@ export const NativeFederationTypeScriptRemote = createUnplugin((options: RemoteO
         if (remoteOptions.deleteTypesFolder) {
           await rm(retrieveMfTypesPath(tsConfig, remoteOptions), {recursive: true, force: true})
         }
+        console.log(ansiColors.green('Federated types created correctly'))
       } catch(error) {
         console.error(ansiColors.red(`Unable to compile federated types, ${error}`))
       }
@@ -53,6 +54,7 @@ export const NativeFederationTypeScriptHost = createUnplugin((options: HostOptio
       const downloadPromises = Object.entries(mapRemotesToDownload).map(typesDownloader)
 
       await Promise.allSettled(downloadPromises)
+      console.log(ansiColors.green('Federated types extraction completed'))
     }
   }
 })
