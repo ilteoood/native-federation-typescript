@@ -1,6 +1,6 @@
 import {defineConfig} from 'tsup'
 
-const SUPPORTED_BUNDLERS = ['esbuild', 'rollup', 'vite', 'webpack']
+const SUPPORTED_BUNDLERS = ['esbuild', 'rollup', 'vite', 'webpack', 'rspack']
 
 export default defineConfig({
     entry: [

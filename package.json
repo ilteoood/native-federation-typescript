@@ -28,6 +28,11 @@
       "types": "./dist/esbuild.d.ts",
       "require": "./dist/esbuild.cjs",
       "import": "./dist/esbuild.js"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "require": "./dist/rspack.cjs",
+      "import": "./dist/rspack.js"
     }
   },
   "main": "./dist/index.cjs",
