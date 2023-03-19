@@ -129,6 +129,23 @@ build({
 
 <br>
 </details>
+<details>
+<summary>Rspack</summary><br>
+
+```ts
+// rspack.config.js
+const {NativeFederationTypeScriptHost, NativeFederationTypeScriptRemote} = require('native-federation-typescript/rspack')
+module.exports = {
+  /* ... */
+  plugins: [
+    NativeFederationTypeScriptRemote({ /* options */ }),
+    NativeFederationTypeScriptHost({ /* options */ })
+  ]
+}
+```
+
+<br>
+</details>
 
 ## TypeScript configuration
 
