@@ -1,3 +1,5 @@
+# THIS PLUGIN IS NOW PART OF THE OFFICIAL [MODULE FEDERATION ORGANIZATION](https://github.com/module-federation/universe/tree/main/packages/native-federation-typescript)
+
 # native-federation-typescript
 
 Bundler agnostic plugins to share federated types.
